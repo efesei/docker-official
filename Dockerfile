@@ -1,5 +1,5 @@
 # FYI, this base image is built via ".github/workflows/.bashbrew/action.yml" (from https://github.com/docker-library/bashbrew/tree/master/Dockerfile)
-FROM ubuntu:latest
+FROM oisupport/bashbrew:base
 
 RUN set -eux; \
 	apt-get update; \
