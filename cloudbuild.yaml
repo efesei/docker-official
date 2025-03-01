@@ -20,6 +20,10 @@ steps:
       - '--platform=managed'
       - '--port=${_PORT}'
       - '--allow-unauthenticated'
+      - '--use-http2'  # Enable HTTP/2 for better performance
+      - '--cpu=1'      # Ensure adequate CPU allocation
+      - '--memory=512Mi' # Ensure adequate memory allocation
+      - '--concurrency=80' # Allow higher concurrency for multiple connections
 
 # Store images in Google Container Registry
 images:
@@ -30,7 +34,7 @@ timeout: '1200s'
 
 # Define substitution variables
 substitutions:
-  _PORT: '8080'  # Default port
+  _PORT: '0'  # Value of 0 indicates listening on all ports
 
 # Logging configuration
 options:
