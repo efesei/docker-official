@@ -29,5 +29,19 @@ COPY --from=gcr.io/go-containerregistry/crane@sha256:fc86bcad43a000c2a1ca926a1e1
 WORKDIR $DIR
 COPY . $DIR
 
+# Install Python for a simple web server
+RUN apt-get update && apt-get install -y python3
+
+# Create a simple index.html file
+RUN mkdir -p /app/public
+WORKDIR /app/public
+RUN echo "<html><body><h1>Docker Official Images Tools</h1><p>Container is running</p></body></html>" > index.html
+
+# Set working directory back to original
+WORKDIR $DIR
+
+# Expose the port
 EXPOSE 8080
 
+# Start a simple HTTP server that listens on all interfaces (0.0.0.0) on port 8080
+CMD cd /app/public && python3 -m http.server ${PORT:-8080} --bind 0.0.0.0
