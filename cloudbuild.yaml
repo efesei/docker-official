@@ -20,7 +20,7 @@ steps:
       - '--platform=managed'
       - '--port=${_PORT}'
       - '--allow-unauthenticated'
-      - '--set-env-vars=HOST=0.0.0.0,PORT=${_PORT}'
+      - '--set-env-vars=HOST=0.0.0.0'
 
 # Store images in Google Container Registry
 images:
