@@ -28,30 +28,27 @@ WORKDIR $DIR
 COPY . $DIR
 
 # Set environment variable for the port
-ENV PORT 8080
+ENV PORT=8080
 
 # Expose port 8080 for Cloud Run routing
 EXPOSE 8080
 
-# Create a simple HTTP server to serve as a health check
-RUN echo '#!/usr/bin/env node \n\
-const http = require("http"); \n\
-const { exec } = require("child_process"); \n\
+# Create a simple HTTP server file with explicit binding to 0.0.0.0
+RUN echo 'const http = require("http");\n\
+const port = parseInt(process.env.PORT) || 8080;\n\
 \n\
-const server = http.createServer((req, res) => { \n\
-  res.statusCode = 200; \n\
-  res.setHeader("Content-Type", "text/plain"); \n\
-  res.end("Docker Official Images Service Running"); \n\
-}); \n\
+const server = http.createServer((req, res) => {\n\
+  res.statusCode = 200;\n\
+  res.setHeader("Content-Type", "text/plain");\n\
+  res.end("Docker Official Images Service Running");\n\
+});\n\
 \n\
-const port = process.env.PORT || 8080; \n\
-server.listen(port, () => { \n\
-  console.log(`Server running on port ${port}`); \n\
-  // Start your actual application process here if needed \n\
-  // exec("your-actual-command &", (error, stdout, stderr) => { \n\
-  //   if (error) console.error(`exec error: ${error}`); \n\
-  // }); \n\
-}); \n' > server.js && chmod +x server.js
+server.listen(port, "0.0.0.0", () => {\n\
+  console.log(`Server running at http://0.0.0.0:${port}/`);\n\
+});\n' > server.js
+
+# Make sure server.js is executable
+RUN chmod +x server.js
 
 # Start the HTTP server
 CMD ["node", "server.js"]
