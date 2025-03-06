@@ -28,3 +28,6 @@ COPY --from=gcr.io/go-containerregistry/crane@sha256:fc86bcad43a000c2a1ca926a1e1
 
 WORKDIR $DIR
 COPY . $DIR
+
+EXPOSE 8080
+CMD ["your-app-command"]
