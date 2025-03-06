@@ -29,5 +29,12 @@ COPY --from=gcr.io/go-containerregistry/crane@sha256:fc86bcad43a000c2a1ca926a1e1
 WORKDIR $DIR
 COPY . $DIR
 
+# Set environment variable for the port (optional if your code handles process.env.PORT)
+ENV PORT 8080
+
+# Expose port 8080 for Cloud Run to route traffic
 EXPOSE 8080
-CMD ["your-app-command"]
+
+# Start the application
+CMD ["npm", "start"]
+
